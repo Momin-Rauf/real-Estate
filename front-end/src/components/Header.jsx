@@ -19,7 +19,7 @@ const Header = () => {
                 <li>About</li>
                 <li>Home</li>
                 <li>
-                    Login
+                    Link
                 </li>
                 {/* <Link to={'/'} >hello</Link> */}
                 {/* <Link to='/about' ><li className='hover:underline text-white' >About</li></Link> */}
