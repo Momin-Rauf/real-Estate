@@ -16,14 +16,7 @@ const Header = () => {
         </div>
         <div className='p-3 sm:inline hidden sm:justify-center sm:items-center text-white   ' >
             <ul className='flex gap-4' >
-                <li>About</li>
-                <li>Home</li>
-                <li>
-                    Link
-                </li>
-                {/* <Link to={'/'} >hello</Link> */}
-                {/* <Link to='/about' ><li className='hover:underline text-white' >About</li></Link> */}
-                {/* <Link to='/login' ><li className='hover:underline text-white' >Login</li></Link> */}
+                <p>hello</p>
             </ul>
         </div>
     </nav>
