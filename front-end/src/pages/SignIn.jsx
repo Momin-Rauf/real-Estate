@@ -3,12 +3,12 @@ import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+import {signInStart,signInSuccess,signInfailure} from '../redux/user/userSlice.js';
+import { useSelector,useDispatch } from "react-redux";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
@@ -16,10 +16,10 @@ const SignIn = () => {
       [e.target.id]: e.target.value,
     });
   };
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    dispatch(signInStart());
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -33,18 +33,17 @@ const SignIn = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Signin failed");
-      }
+        dispatch(signInfailure("Wrong Credentials"));
+        console.log(error);
+        return;
+        }
 
       console.log("Signin successful:", data);
-      setError(null);
+    dispatch(signInSuccess(data));
       navigate('/');
     } catch (err) {
-      console.error("Signin error:", err.message);
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+      dispatch(signInfailure(err.message));
+    }   
   };
   return (
     <div>
