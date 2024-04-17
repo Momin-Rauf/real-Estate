@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Loading from "../components/Loading";
 import { useNavigate } from "react-router-dom";
+import GoogleAuth from "../components/GoogleAuth.jsx";
 import { Link } from "react-router-dom";
 
 import {signInStart,signInSuccess,signInfailure} from '../redux/user/userSlice.js';
@@ -70,11 +71,12 @@ const SignIn = () => {
         />
         <button
           type="submit"
-          className="mt-4 block rounded-lg py-2 px-4 sm:ml-0 ml-4 text-white hover:shadow-md hover:bg-[#616060] shadow-sm shadow-black hover:shadow-black bg-[#545454]"
+          className="mt-4 block w-[30%] rounded-lg py-2 px-4 sm:ml-0 ml-4 text-white hover:shadow-md hover:bg-[#616060] shadow-sm shadow-black hover:shadow-black bg-[#545454]"
           id="signup"
         >
           Log in
         </button>
+        <GoogleAuth/>
         {error && <p className="text-red-900 m-3">{error}</p>}
         <span>
           <p className="inline sm:ml-0 ml-4">Don't have an account?</p>

@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import bycryptjs from "bcryptjs";
 import jwt from 'jsonwebtoken';
 
+
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
   const hashPassword = bycryptjs.hashSync(password, 10);
@@ -43,6 +44,39 @@ export const login = async(req,res,next)=>{
     } catch (error) {
         next(error);
     }
-
-    
 }
+
+//google auth
+export const google = async (req, res, next) => {
+  const { email, username } = req.body;
+
+  try {
+    // Check if user already exists
+    let userData = await User.findOne({ email });
+
+    if (userData) {
+      // User exists, generate JWT token and respond
+      const token = jwt.sign({ id: userData._id }, process.env.JWT_SECRET_KEY);
+      const { password: pass, ...rest } = userData._doc;
+      res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest);
+    } else {
+      // User does not exist, create a new user with random password
+      const passWord = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      const hashedPass = bycryptjs.hashSync(passWord, 10);
+
+      const newUser = new User({ username, email, password: hashedPass,photo:req.body.photo});
+      await newUser.save();
+
+      // Generate JWT token for the new user
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET_KEY);
+      const { password: pass, ...rest } = newUser._doc;
+
+      // Respond with user data and JWT token
+      res.cookie('access_token', token, { httpOnly: true }).status(200).json({ ...rest, password: passWord });
+      
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
