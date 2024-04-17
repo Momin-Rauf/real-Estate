@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import Header from './components/Header';
+import PrivateProfile from './components/PrivateProfile';
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
+        <Route element={<PrivateProfile/>} >
         <Route path="/profile" element={<Profile />} />
+        </Route>
         
     </Routes>
     </BrowserRouter>

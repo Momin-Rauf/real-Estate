@@ -1,8 +1,11 @@
 import React from 'react'
 import { FiSearch } from "react-icons/fi";
 import { Link } from 'react-router-dom';
+import {useSelector} from 'react-redux';
+import profile from '../../public/profile.jpeg';
 
 const Header = () => {
+  const {currentUser} = useSelector((state)=> state.user);
   return (
     <nav className='bg-[#545454] flex w-[100%] flex-row justify-between gap-3 p-3  sm:text-sm ' >
         <div className='p-3  font-bold' >
@@ -18,7 +21,18 @@ const Header = () => {
             <ul className='flex gap-4' >
                 <a href="/home">Home</a>
                 <a href="/about">About</a>
-                <a href="/login">Sign in</a>
+                
+                <a href="/profile">
+
+                {currentUser ? (
+                  <img className='w-7 h-7 rounded-full object-cover' src={profile} alt="profile" />
+                ) : (
+                  <li>Sign in</li>
+                )
+              }
+              </a>
+                
+                
             </ul>
         </div>
     </nav>
