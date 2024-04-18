@@ -11,6 +11,7 @@ const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
   const imageRef = React.useRef(null);
   const [formData,setFormData] = useState({});
+  console.log(currentUser.photo,formData.photo,profileImage);
 
   useEffect(() => {
     if (file) {
@@ -73,7 +74,7 @@ const Profile = () => {
         <img
           onClick={handleImageClick}
           className="w-24 cursor-pointer h-24 shadow-sm self-center mb-4 rounded-full object-cover"
-          src={formData.photo || profileImage}
+          src={formData.photo || currentUser.photo}
           alt="photo"
         />
      {fileUploadError ? (

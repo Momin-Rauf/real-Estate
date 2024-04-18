@@ -2,7 +2,6 @@ import React from 'react'
 import { FiSearch } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import profile from '../../public/profile.jpeg';
 
 const Header = () => {
   const {currentUser} = useSelector((state)=> state.user);
@@ -25,7 +24,7 @@ const Header = () => {
                 <a href="/profile">
 
                 {currentUser ? (
-                  <img className='w-7 h-7 rounded-full object-cover' src={profile} alt="profile" />
+                  <img className='w-7 h-7 rounded-full object-cover' src={currentUser.photo} alt="profile" />
                 ) : (
                   <li>Sign in</li>
                 )
