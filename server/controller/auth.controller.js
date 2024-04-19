@@ -25,17 +25,18 @@ export const login = async(req,res,next)=>{
 
         //email check
         const UserData = await User.findOne({email});
-        
+        console.log(UserData);
         if (!UserData) {
             return res.status(404).json({ error: "User does not exist" });
           }
       
           // Compare passwords
           const isPasswordValid = await bycryptjs.compareSync(password, UserData.password);
-      
+          
           if (!isPasswordValid) {
             return res.status(401).json({ error: "Wrong password" });
           }
+        console.log(isPasswordValid);
         const token = jwt.sign({id:UserData._id},process.env.JWT_SECRET_KEY);
         const {password:pass, ...rest} = UserData._doc;
         res.cookie('access_token',token,{httpOnly:true}).status(200).json(rest);
