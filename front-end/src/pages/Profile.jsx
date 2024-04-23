@@ -1,17 +1,23 @@
 import { app } from '../firebase';
 import React, { useEffect, useState } from 'react';
+import Loading from '../components/Loading.jsx';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { useSelector } from 'react-redux';
-import profileImage from '../../public/profile.jpeg';
+import {deleteUserFailure,deleteUserSuccess,deleteUserStart, updateUserStart, updateUserFailure, updateUserSuccess } from '../redux/user/userSlice.js';
+
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useRef } from 'react';
 
 const Profile = () => {
   const [file, setFile] = useState(null);
   const [percentage, setPercentage] = useState(0);
-  const [fileUploadError, setFileUploadError] = useState(null); // Initialize as null for error handling
-  const { currentUser } = useSelector((state) => state.user);
-  const imageRef = React.useRef(null);
-  const [formData,setFormData] = useState({});
-  console.log(currentUser.photo,formData.photo,profileImage);
+  const [fileUploadError, setFileUploadError] = useState(null);
+  const [formData, setFormData] = useState({});
+  const imageRef = useRef();
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector(state => state.user);
+  const { loading, error } = useSelector(state => state.user);
 
   useEffect(() => {
     if (file) {
@@ -21,7 +27,7 @@ const Profile = () => {
 
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
-    const fileName = new Date().getTime() + '_' + file.name; // Ensure unique filename
+    const fileName = new Date().getTime() + '_' + file.name;
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -29,10 +35,9 @@ const Profile = () => {
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setPercentage(Math.round(progress));
-        console.log(Math.round(progress));
       },
-      (error) => { // Handle upload error
-        setFileUploadError(error.message); // Set error message
+      (error) => {
+        setFileUploadError(error.message);
       }
     );
 
@@ -41,9 +46,7 @@ const Profile = () => {
         return getDownloadURL(snapshot.ref);
       })
       .then((downloadURL) => {
-        console.log('File uploaded:', downloadURL);
-        setFormData({...FormData,photo:downloadURL});
-        // Handle the downloaded URL as needed
+        setFormData({...formData, photo: downloadURL});
       })
       .catch((error) => {
         console.error('Error getting download URL:', error);
@@ -60,10 +63,70 @@ const Profile = () => {
     setFile(e.target.files[0]);
   };
 
+  const handleFormChange = (e) => {
+    setFormData({...formData, [e.target.id]: e.target.value});
+  };
+
+  const updateHandler = async () => {
+    try {
+      dispatch(updateUserStart(true));
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      if (!res.ok) {
+        throw new Error('Failed to update');
+      }
+
+      const updatedData = await res.json();
+      dispatch(updateUserSuccess(updatedData));
+      
+    } catch (error) {
+      dispatch(updateUserFailure("Failed to update"));
+    }
+  };
+
+  console.log(currentUser._id);
+  const logout = async () => {
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch('/api/user/logout');
+      const data = await res.json();
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure('failed to log out'));
+    }
+  };
+  
+
+    
+  
+  const deleteHandler = async()=>{
+    try {
+      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
+        method:'DELETE',
+      })
+      const data = await res.json();
+      if (data.success === false){
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure("Failed to delete"));
+    }}
+  
+
   return (
-    <div>
-      <h1 className="text-3xl text-[#545454] self-center text-center m-5 mb-12">Profile</h1>
-      <form className="flex flex-col mx-auto max-w-lg">
+    <>
+      {loading && <Loading />}
+      <form className="flex flex-col gap-3 mx-auto min-w-lg">
+        <h1 className="text-3xl text-[#545454] self-center text-center ">Profile</h1>
         <input
           type="file"
           onChange={handleFileChange}
@@ -71,51 +134,55 @@ const Profile = () => {
           accept="image/*"
           ref={imageRef}
         />
-        <img
+        <img 
           onClick={handleImageClick}
-          className="w-24 cursor-pointer h-24 shadow-sm self-center mb-4 rounded-full object-cover"
+          className="w-24 cursor-pointer h-24 shadow-md shadow-black self-center mb-4 rounded-full object-cover"
           src={formData.photo || currentUser.photo}
           alt="photo"
         />
-     {fileUploadError ? (
-  <span>error uploading the file</span>
-) : percentage > 0 && percentage < 100 ? (
-  <span className='text-green-600 text-center text-sm'>{percentage}%</span>
-) : percentage === 100 ? (
-  <span className='text-green-600 text-center text-sm'>successful</span>
-) : null}
-
+        <h2 className='text-center text-lg mb-2 font-bold'>{currentUser.username}</h2>
+        {fileUploadError && <span className="text-red-600">{fileUploadError}</span>}
         <input
-          className="my-1 p-2 sm:ml-0 ml-4 rounded-lg text-sm outline-none shadow-md"
+          className=" p-2 sm:ml-0 ml-4 rounded-lg text-sm outline-none shadow-md"
           type="text"
           id="username"
-          placeholder="Username"
+          onChange={handleFormChange}
+          placeholder={currentUser.username}
         />
         <input
-          className="my-1 p-2 sm:ml-0 ml-4 rounded-lg text-sm outline-none shadow-md"
+          className=" p-2 sm:ml-0 ml-4 rounded-lg text-sm outline-none shadow-md"
           type="email"
           id="email"
-          placeholder="Email"
+          onChange={handleFormChange}
+          placeholder={currentUser.email}
         />
         <input
-          className="my-1 p-2 sm:ml-0 ml-4 rounded-lg text-sm outline-none shadow-md"
+          className=" p-2 sm:ml-0 ml-4 rounded-lg text-sm outline-none shadow-md"
           type="password"
+          onChange={handleFormChange}
           id="password"
-          placeholder="Password"
+          placeholder="*******"
         />
         <button
-          type="button" // Change to 'button' type to prevent form submission
-          className="mt-4 block rounded-lg py-2 px-4 sm:ml-0 ml-4 text-white hover:shadow-md hover:bg-[#616060] shadow-sm shadow-black hover:shadow-black bg-[#545454]"
-          onClick={() => {
-            // Handle form submission logic here
-          }}
+          type="button"
+          className="mt-4 block rounded-lg py-2 px-4 sm:ml-0 ml-4 text-white hover:opacity-95 shadow-sm shadow-black hover:shadow-black bg-[#545454]"
+          onClick={() => updateHandler()}
         >
           Update
         </button>
+        {error && <span className='text-red-900 text-md'>Error! {error}</span>}
       </form>
-      
-    </div>
-  );
-};
+      <div className='flex mx-auto w-[40%] mt-2 flex-row justify-between'>
+        <button type='button' onClick={deleteHandler} className='border-[1px] p-1 rounded-lg border-blue-900 bg-transparent hover:bg-[#545454] hover:text-white'>
+          Delete account
+        </button>
+        <button onClick={()=>logout()} className='border-[1px] p-1 rounded-lg border-[blue] bg-transparent hover:bg-[#545454] hover:text-white'>
+          Sign out
+        </button>
+      </div>
+    </>
+  )
+  }
+
 
 export default Profile;

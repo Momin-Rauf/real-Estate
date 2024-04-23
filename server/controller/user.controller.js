@@ -13,7 +13,7 @@ export const updateUser = async(req,res,next)=>{
             console.log(req.body.password);
             req.body.password = bcryptjs.hashSync(req.body.password,10);
         }
-        console.log(123)
+        
         const updateUser = await User.findByIdAndUpdate(req.params.id,{
             $set:{
                 username:req.body.username,
@@ -26,6 +26,31 @@ export const updateUser = async(req,res,next)=>{
         res.status(200).json(rest);
     }
     else{
+        return next(new Error("Invalid ID"));
+    }
+}
+
+
+export const deleteUser = async(req,res,next) => {
+    if(req.user.id === req.params.id){
+        if(req.body.password){
+            req.body.password = bcryptjs.hashSync(req.body.password,10);
+        }
+        
+        const deleteUser = await User.findByIdAndDelete(req.params.id);
+        res.clearCookie('access_token');
+        res.status(200).json("User has been deleted");
+    }
+    else{
+        return next(new Error("Invalid ID"));
+    }
+}
+
+export const logout = async(req,res,next) => {
+    try {
+        res.clearCookie('access_token');
+        res.status(200).json('logged out');
+    } catch (error) {
         return next(new Error("Invalid ID"));
     }
 }
