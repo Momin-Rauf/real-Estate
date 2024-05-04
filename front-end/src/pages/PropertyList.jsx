@@ -63,6 +63,21 @@ const PropertyList = () => {
         );
         })
     }
+
+    const handleRemove = async (index) => {
+        try {
+            const updatedUrls = formData.imageUrls.filter((_, i) => i !== index);
+            setFormData({
+                ...formData,
+                imageUrls: updatedUrls,
+            });
+        } catch (error) {
+            console.error('Error occurred during image removal:', error);
+        }
+    };
+    
+    console.log("length",formData.imageUrls.length);
+    
   return (
     <div className='bg-gray-300 mx-auto justify-center items-center h-[85vh] min-w-4xl sm:flex-row flex flex-col gap-1 border-red-200 ' >
         <form   className='flex p-3 rounded-lg flex-col gap-4 ' >
@@ -89,8 +104,9 @@ const PropertyList = () => {
             <button type='button' onClick={handleImageSubmit} className='border-[.4px] border-red-500' id="upload">Upload</button>
 
             {
-                formData.imageUrls.length > 0 && formData.imageUrls.map((url)=>{
-                    <img src={url} alt="listing images" className='w-20 h-20 object-cover rounded-lg' />
+                formData.imageUrls.length > 0 && formData.imageUrls.map((url,index)=>{
+                   
+                 return  <div key={index} ><img className="w-12 h-12"  src={url} alt="listing images"   /><button type='button' className='border-[2px]  border-black' onClick={()=>handleRemove(index)} >Delete</button></div>
 })
             }
             <button type='submit' className="mt-4 text-center block rounded-lg py-2 px-4 sm:ml-0 ml-4 text-white 
