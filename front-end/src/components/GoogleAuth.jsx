@@ -40,4 +40,4 @@ const navigate = useNavigate();
   )
 }
 
-export default GoogleAuth
+export default GoogleAuth;

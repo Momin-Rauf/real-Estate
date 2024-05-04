@@ -10,6 +10,7 @@ import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import Header from './components/Header';
 import PrivateProfile from './components/PrivateProfile';
+import PropertyList from './pages/PropertyList';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />
         <Route element={<PrivateProfile/>} >
-        <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path = '/create-list' element={<PropertyList/>} />
         </Route>
         
     </Routes>

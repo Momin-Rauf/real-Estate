@@ -125,7 +125,7 @@ const Profile = () => {
   return (
     <>
       {loading && <Loading />}
-      <form className="flex flex-col gap-3 mx-auto min-w-lg">
+      <form className="flex flex-col gap-3 mx-auto max-w-lg min-w-lg">
         <h1 className="text-3xl text-[#545454] self-center text-center ">Profile</h1>
         <input
           type="file"
@@ -170,6 +170,8 @@ const Profile = () => {
         >
           Update
         </button>
+        <Link className="mt-4 text-center block rounded-lg py-2 px-4 sm:ml-0 ml-4 text-white hover:opacity-95 shadow-sm shadow-black hover:shadow-black bg-green-900"
+             to={'/create-list'} >Create listing</Link>
         {error && <span className='text-red-900 text-md'>Error! {error}</span>}
       </form>
       <div className='flex mx-auto w-[40%] mt-2 flex-row justify-between'>
