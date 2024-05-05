@@ -38,10 +38,7 @@ const ListSchema = new mongoose.Schema({
         type:Boolean,
         required:true,
     },
-    rent:{
-        type:String,
-        required:true,
-    },
+    
     offer:{
         type:Boolean,
         required:true,

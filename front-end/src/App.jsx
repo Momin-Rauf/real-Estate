@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import Header from './components/Header';
+import Listing from './pages/Listing';
 import PrivateProfile from './components/PrivateProfile';
 import PropertyList from './pages/PropertyList';
 
@@ -25,6 +26,8 @@ function App() {
         <Route element={<PrivateProfile/>} >
           <Route path="/profile" element={<Profile />} />
           <Route path = '/create-list' element={<PropertyList/>} />
+          <Route path='/listing/:listingId' element={<Listing />} />
+
         </Route>
         
     </Routes>

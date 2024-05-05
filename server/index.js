@@ -29,11 +29,11 @@ app.listen(3000,()=>{
 
 
 
+app.use(cookieParser());
 app.use('/api/auth',authRouter);
 app.use('/api/listing',listingRouter);
 
 
-app.use(cookieParser());
 app.use('/api/user',userRouter);
 app.use((err,req,res,next)=>{
     const code = err.statusCode || 500;
