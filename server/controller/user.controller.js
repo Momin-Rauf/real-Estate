@@ -1,5 +1,6 @@
 import { response } from "express";
 import User from "../models/user.model.js";
+import listing from '../models/listing.model.js';
 import bcryptjs from 'bcryptjs';
 export const test = (req,res)=>{
     res.json({
@@ -54,3 +55,18 @@ export const logout = async(req,res,next) => {
         return next(new Error("Invalid ID"));
     }
 }
+
+export const getUserListing = async(req,res,next) => {
+    if (req.user.id === req.params.id){
+        console.log(req.params.id);
+        try {
+            const listings  = await listing.find({useRef:req.params.id});
+            res.status(200).json(listings);
+
+        } catch (error) {
+            next(error);
+        }
+        }
+    else{
+        return next("only view you lists");
+    }}

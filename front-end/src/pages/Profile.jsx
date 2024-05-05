@@ -8,6 +8,8 @@ import {deleteUserFailure,deleteUserSuccess,deleteUserStart, updateUserStart, up
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useRef } from 'react';
+import { current } from '@reduxjs/toolkit';
+import listing from '../../../server/models/listing.model.js';
 
 const Profile = () => {
   const [file, setFile] = useState(null);
@@ -16,6 +18,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
   const imageRef = useRef();
   const dispatch = useDispatch();
+  const [Fetchlisting,setListing] = useState([]);
   const { currentUser } = useSelector(state => state.user);
   const { loading, error } = useSelector(state => state.user);
 
@@ -120,7 +123,24 @@ const Profile = () => {
     } catch (error) {
       dispatch(deleteUserFailure("Failed to delete"));
     }}
-  
+
+    const fetchLists = async()=>{
+      const data = await fetch(`/api/user/listing/${currentUser._id}`);
+      const res = await data.json();
+      setListing(res);
+      console.log(res);
+
+    }
+
+    const deletelistHandler = async(ID)=>{
+      console.log(ID)
+      const res = await fetch(`/api/listing/delete/${ID}`,{
+        method:"DELETE"});
+        const data =await res.json();
+        setListing((prev) =>
+          prev.filter((listing) => listing._id !== ID));
+        return;
+    }
 
   return (
     <>
@@ -174,6 +194,15 @@ const Profile = () => {
              to={'/create-list'} >Create listing</Link>
         {error && <span className='text-red-900 text-md'>Error! {error}</span>}
       </form>
+      <button onClick={()=>fetchLists()} >Show listing</button>
+      {Fetchlisting && Fetchlisting.map((l,index)=>{
+        console.log("adsd",l._id)
+        return <div key={index} >
+          <img src={l.imageUrls[0]} alt="" />
+          <button onClick={()=>deletelistHandler(l._id)} >delete</button>
+          <button>Edit</button>
+        </div>
+      })}
       <div className='flex mx-auto w-[40%] mt-2 flex-row justify-between'>
         <button type='button' onClick={deleteHandler} className='border-[1px] p-1 rounded-lg border-blue-900 bg-transparent hover:bg-[#545454] hover:text-white'>
           Delete account
