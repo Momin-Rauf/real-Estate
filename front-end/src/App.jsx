@@ -1,6 +1,5 @@
 import React from 'react';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';  
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp'; // Assuming this is the correct component name for signup
