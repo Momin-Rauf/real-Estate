@@ -32,3 +32,33 @@ export const deleteListing = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateListing = async(req,res,next)=>{
+    const listings  = await listing.findById(req.params.id);
+    if (!listings) {
+      return next("List not Found");
+    }
+    if (req.user.id !== listings.useRef){
+      return next('Permision Denied');
+    }
+    
+    try {
+      const updatedListing = await listing.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new:true }
+      );
+    } catch (error) {
+      next('error');
+    }
+    
+  }
+
+export const getListing = async(req,res,next)=>{
+  try {
+    const property = await listing.findById(req.params.id);
+    return res.status(201).json(property);
+  } catch (error) {
+    next('error detected at getting the list')
+  }
+}

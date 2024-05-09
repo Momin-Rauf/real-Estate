@@ -199,8 +199,9 @@ const Profile = () => {
         console.log("adsd",l._id)
         return <div key={index} >
           <img src={l.imageUrls[0]} alt="" />
+          <Link to={`/get/${l._id}`} className='underline' >{l.description}</Link>
           <button onClick={()=>deletelistHandler(l._id)} >delete</button>
-          <button>Edit</button>
+          <Link to={`/editlist/${l._id}`} >Edit</Link>
         </div>
       })}
       <div className='flex mx-auto w-[40%] mt-2 flex-row justify-between'>
