@@ -23,6 +23,7 @@ const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
+//cool
 app.listen(3000,()=>{
     console.log("server is running")
 });
