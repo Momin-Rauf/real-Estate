@@ -172,7 +172,7 @@ const PropertyList = () => {
     };
     
   return (
-    <div className='bg-gray-300 mx-auto justify-center items-center h-[85vh] min-w-4xl sm:flex-row flex flex-col gap-1 border-red-200 ' >
+    <div className='bg-gray-300 mx-auto justify-center items-center h-auto min-w-4xl sm:flex-row flex flex-col gap-1 border-red-200 ' >
         <form onSubmit={handleSubmit}  className='flex p-3 rounded-lg flex-col gap-4 ' >
             <input onChange={handleChange} value={formData.name} id='name' placeholder='Name'  className='rounded-md outline-none h-[25px] p-3' required type="text" />
             <input onChange={handleChange} value={formData.address}  id='address' placeholder='address' className='rounded-md p-3 h-[25px] outline-none' required type="text" />

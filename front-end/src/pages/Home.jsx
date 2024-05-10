@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { Navigation } from 'swiper/modules';
 import SwiperCore from 'swiper';
+import * as React from 'react'
+import photo from '../../public/photo.jpg'
+
+// 1. import `ChakraProvider` component
+import { ChakraProvider } from '@chakra-ui/react'
 import 'swiper/css/bundle';
 import ListingItem from '../components/ListingItem';
 
@@ -15,7 +21,7 @@ export default function Home() {
   useEffect(() => {
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?offer=true&limit=4');
+        const res = await fetch('/api/listing/getlist?offer=true&limit=4');
         const data = await res.json();
         setOfferListings(data);
         fetchRentListings();
@@ -25,7 +31,7 @@ export default function Home() {
     };
     const fetchRentListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=rent&limit=4');
+        const res = await fetch('/api/listing/getlist?type=rent&limit=4');
         const data = await res.json();
         setRentListings(data);
         fetchSaleListings();
@@ -36,7 +42,7 @@ export default function Home() {
 
     const fetchSaleListings = async () => {
       try {
-        const res = await fetch('/api/listing/get?type=sale&limit=4');
+        const res = await fetch('/api/listing/getlist?type=sale&limit=4');
         const data = await res.json();
         setSaleListings(data);
       } catch (error) {
@@ -46,15 +52,23 @@ export default function Home() {
     fetchOfferListings();
   }, []);
   return (
-    <div>
+    <ChakraProvider>
+
+    <div  className='bg-[#c1cbd9]' >
       {/* top */}
-      <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto'>
-        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
-          Find your next <span className='text-slate-500'>perfect</span>
+     
+      <div style={{
+                    background: `url(${photo}) `,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                  }}     className='flex flex-col opacity-85 shadow-xl shadow-black bg-[#EDF2F7]  gap-6 p-32 px-10 max-w-6xl mx-auto'>
+        
+        <h1 className='text-[black] font-bold text-3xl lg:text-6xl'>
+          We Build <span className='text-slate-500'>Houses</span>
           <br />
-          place with ease
+          You make them Home
         </h1>
-        <div className='text-gray-400 text-xs sm:text-sm'>
+        <div className='text-gray-900 text-xs sm:text-sm'>
           Sahand Estate is the best place to find your next perfect place to
           live.
           <br />
@@ -62,13 +76,16 @@ export default function Home() {
         </div>
         <Link
           to={'/search'}
-          className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'
+          className='text-xs sm:text-sm text-blue-black border-[2px] p-4 w-[20%] hover:bg-slate-500 hover:text-white rounded-lg border-black hover:border-white font-bold '
         >
           Let's get started...
         </Link>
       </div>
 
+      <img src="" alt="" />
+
       {/* swiper */}
+      {console.log(offerListings)}
       <Swiper navigation>
         {offerListings &&
           offerListings.length > 0 &&
@@ -130,5 +147,6 @@ export default function Home() {
         )}
       </div>
     </div>
+    </ChakraProvider>
   );
 }

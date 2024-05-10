@@ -47,15 +47,15 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="h-auto p-4 m-3 " >
       {loading && <Loading />}{" "}
       {/* Display loading indicator if loading state is true */}
       <form
-        className="sm:text-lg sm:max-w-[100%] sm:bg-[#eadede] sm:py-3 sm:mt-5 sm:mx-[300px] sm:rounded-3xl sm:shadow-sm sm:shadow-black sm:flex flex-col gap-5 justify-center items-center"
+        className="sm:text-lg sm:max-w-[100%] sm:bg-[#CBD5E0] sm:py-3 sm:mt-5 sm:mx-[300px] sm:rounded-3xl sm:shadow-sm sm:shadow-black sm:flex flex-col gap-5 justify-center items-center"
         onSubmit={handleSubmit}
       >
-        <h1 className="text-3xl text-[#545454] text-center m-5">Sign up</h1>
-        <input
+       <h1 className="text-[40px]  text-[#2D3748] font-extrabold  text-center m-5">Sign In</h1>
+         <input
           onChange={handleChange}
           className="my-1 p-2 sm:ml-0 ml-4 rounded-lg text-sm w-[100%] sm:w-[55%] outline-none shadow-md"
           type="text"
