@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
+    "start":"node server/index.js",
     "build": "npm install && npm install --prefix front-end && npm run build --prefix front-end"
   },
   "keywords": [],
