@@ -237,7 +237,7 @@ const Profile = () => {
 
         <button
           type="button"
-          className="mt-4 block rounded-lg py-2 px-4 text-white bg-2D3748 hover:opacity-95 shadow-sm"
+          className="mt-4  rounded-lg py-2 px-4 text-white bg-[#2D3748] hover:opacity-95 shadow-sm"
           onClick={updateHandler}
         >
           Update
