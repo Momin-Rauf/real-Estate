@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.css';
 import Home from './pages/Home';
+
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp'; // Assuming this is the correct component name for signup
 import About from './pages/About';
@@ -13,17 +14,19 @@ import Listing from './pages/Listing';
 import PrivateProfile from './components/PrivateProfile';
 import PropertyList from './pages/PropertyList';
 import EditListing from './pages/EditListing';
+import Search from './pages/Search';
+
 import LandPage from './pages/LandPage';
 
 function App() {
   return (
     <>
-    <Header/>
     <BrowserRouter>
+    <Header/>
     <Routes>
      <Route path="/" element={<Home />} />
         <Route path="/login" element={<SignIn />} />
-        
+        <Route path='/search' element={<Search />} />
         <Route path="/get/:id" element={<LandPage/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<About />} />

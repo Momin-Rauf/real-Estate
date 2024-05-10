@@ -8,8 +8,6 @@ import {deleteUserFailure,deleteUserSuccess,deleteUserStart, updateUserStart, up
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useRef } from 'react';
-import { current } from '@reduxjs/toolkit';
-import listing from '../../../server/models/listing.model.js';
 
 const Profile = () => {
   const [file, setFile] = useState(null);
@@ -128,7 +126,7 @@ const Profile = () => {
       const data = await fetch(`/api/user/listing/${currentUser._id}`);
       const res = await data.json();
       setListing(res);
-      console.log(res);
+      console.log("response",res);
 
     }
 
@@ -195,7 +193,7 @@ const Profile = () => {
         {error && <span className='text-red-900 text-md'>Error! {error}</span>}
       </form>
       <button onClick={()=>fetchLists()} >Show listing</button>
-      {Fetchlisting && Fetchlisting.map((l,index)=>{
+      {Fetchlisting ? Fetchlisting.map((l,index)=>{
         console.log("adsd",l._id)
         return <div key={index} >
           <img src={l.imageUrls[0]} alt="" />
@@ -203,7 +201,8 @@ const Profile = () => {
           <button onClick={()=>deletelistHandler(l._id)} >delete</button>
           <Link to={`/editlist/${l._id}`} >Edit</Link>
         </div>
-      })}
+      }) : ''
+    }
       <div className='flex mx-auto w-[40%] mt-2 flex-row justify-between'>
         <button type='button' onClick={deleteHandler} className='border-[1px] p-1 rounded-lg border-blue-900 bg-transparent hover:bg-[#545454] hover:text-white'>
           Delete account

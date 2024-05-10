@@ -43,6 +43,10 @@ const ListSchema = new mongoose.Schema({
         type:Boolean,
         required:true,
     },
+    type:{
+        type:String,
+        required:true,
+    },
     useRef:{
         type:String,
         required:true,

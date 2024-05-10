@@ -64,7 +64,7 @@ export default function LandPage() {
                 <div
                   className='h-[550px]'
                   style={{
-                    background: `url(${url}) center no-repeat`,
+                    background: `url(${url}) `,
                     backgroundSize: 'cover',
                   }}
                 ></div>

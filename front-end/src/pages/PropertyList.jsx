@@ -31,7 +31,7 @@ const PropertyList = () => {
 
 
     const handleChange = (e) => {
-        if (e.target.id === 'sell' || e.target.id === 'rent') {
+        if (e.target.id === 'sale' || e.target.id === 'rent') {
           setFormData({
             ...formData,
             type: e.target.id,
@@ -94,7 +94,6 @@ const PropertyList = () => {
             setError(data.message);
           }
 
-          navigate(`/listing/${data._id}`);
         } catch (error) {
           setError("error:"+ error.message);
           setLoading(false);
@@ -180,7 +179,7 @@ const PropertyList = () => {
             <textarea onChange={handleChange} value={formData.description}  id='description' placeholder='description' className='rounded-md w-40 outline-none' required name="description"  cols="10" rows="2"></textarea>    
 
             <div className='flex  gap-4 flex-wrap sm:flex-row flex-row' >
-    <div><input onChange={handleChange} checked={formData.type === 'sell'}  type="checkbox" className='m-4' id="sell" /><span>sell</span></div>
+    <div><input onChange={handleChange} checked={formData.type === 'sale'}  type="checkbox" className='m-4' id="sell" /><span>sell</span></div>
     <div><input onChange={handleChange} checked={formData.type === 'rent'}  type="checkbox" className='m-4' id="rent" /><span>rent</span></div>
     <div> <input onChange={handleChange} checked={formData.parking} type="checkbox" className='m-4' id="parking" /><span>parking</span></div>
     <div><input onChange={handleChange} checked={formData.furnished} type="checkbox" className='m-4' id="furnished" /><span>furnished</span></div>
