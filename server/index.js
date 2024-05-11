@@ -29,11 +29,11 @@ app.listen(3000,()=>{
 });
 
 
-app.use(express.static(path.join(__dirname, '/front-end/dist')));
+// app.use(express.static(path.join(__dirname, '/front-end/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'front-end', 'dist', 'index.html'));
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'front-end', 'dist', 'index.html'));
+// })
 app.use(cookieParser());
 app.use('/api/auth',authRouter);
 app.use('/api/listing',listingRouter);

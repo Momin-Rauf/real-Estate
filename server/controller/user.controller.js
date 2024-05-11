@@ -2,11 +2,7 @@ import { response } from "express";
 import User from "../models/user.model.js";
 import listing from '../models/listing.model.js';
 import bcryptjs from 'bcryptjs';
-export const test = (req,res)=>{
-    res.json({
-        message:"Hello world!",
-    });
-}
+
 export const updateUser = async(req,res,next)=>{
     if(req.user.id === req.params.id){
         console.log(req.user.id,req.params.id,req.user.id === req.params.id);

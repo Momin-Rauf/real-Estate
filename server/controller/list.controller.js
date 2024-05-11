@@ -10,7 +10,7 @@ export const create = async(req,res,next)=>{
             next(error);
           }
     } catch (error) {
-        next(error)
+        console.log("error");
     }
 };
 
@@ -29,7 +29,7 @@ export const deleteListing = async (req, res, next) => {
     await listing.findByIdAndDelete(req.params.id);
     res.status(200).json('Listing has been deleted!');
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
 
@@ -49,7 +49,7 @@ export const updateListing = async(req,res,next)=>{
         { new:true }
       );
     } catch (error) {
-      next('error');
+      console.log(error)
     }
     
   }
@@ -59,7 +59,7 @@ export const getListing = async(req,res,next)=>{
     const property = await listing.findById(req.params.id);
     return res.status(201).json(property);
   } catch (error) {
-    next('error detected at getting the list')
+    console.log(error)
   }
 }
 
@@ -114,6 +114,6 @@ export const getListings = async (req, res, next) => {
     return res.status(201).json(listings);
     
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
