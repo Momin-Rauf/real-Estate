@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start":"node server/index.js",
+    "start": "node server/index.js",
     "build": "npm install && npm install --prefix front-end && npm run build --prefix front-end"
   },
   "keywords": [],
@@ -22,5 +22,8 @@
     "mongodb": "^6.5.0",
     "mongoose": "^8.3.1",
     "nodemon": "^3.1.0"
+  },
+  "devDependencies": {
+    "text-encoding": "^0.7.0"
   }
 }

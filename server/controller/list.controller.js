@@ -7,7 +7,7 @@ export const create = async(req,res,next)=>{
             await listings.save();
             res.status(201).json("list added");
           } catch (error) {
-            next(error);
+            console.log("error");
           }
     } catch (error) {
         console.log("error");
@@ -18,11 +18,11 @@ export const deleteListing = async (req, res, next) => {
   const listings = await listing.findById(req.params.id);
 
   if (!listings) {
-    return next('Listing not found!');
+    console.log("error");
   }
 
   if (req.user.id !== listings.useRef) {
-    return next('You can only delete your own listings!');
+    console.log("error");
   }
 
   try {
@@ -36,10 +36,10 @@ export const deleteListing = async (req, res, next) => {
 export const updateListing = async(req,res,next)=>{
     const listings  = await listing.findById(req.params.id);
     if (!listings) {
-      return next("List not Found");
+      console.log("error");
     }
     if (req.user.id !== listings.useRef){
-      return next('Permision Denied');
+      console.log("error");
     }
     
     try {
