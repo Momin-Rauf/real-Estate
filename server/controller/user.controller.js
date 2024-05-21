@@ -23,7 +23,7 @@ export const updateUser = async(req,res,next)=>{
         res.status(200).json(rest);
     }
     else{
-        return next(new Error("Invalid ID"));
+        console.log(error)
     }
 }
 
@@ -39,7 +39,7 @@ export const deleteUser = async(req,res,next) => {
         res.status(200).json("User has been deleted");
     }
     else{
-        return next(new Error("Invalid ID"));
+        console.log(error)
     }
 }
 
@@ -48,7 +48,7 @@ export const logout = async(req,res,next) => {
         res.clearCookie('access_token');
         res.status(200).json('logged out');
     } catch (error) {
-        return next(new Error("Invalid ID"));
+        console.log("failed")
     }
 }
 
@@ -60,9 +60,13 @@ export const getUserListing = async(req,res,next) => {
             res.status(200).json(listings);
 
         } catch (error) {
-            next(error);
+            console.log(error)
         }
         }
     else{
-        return next("only view you lists");
+        console.log("error")
     }}
+
+
+
+    
